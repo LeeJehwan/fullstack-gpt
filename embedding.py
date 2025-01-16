@@ -26,10 +26,10 @@ def format_docs(docs):
 @st.cache_data(show_spinner="Embedding file...")
 def embed_file(file, option):
     file_content = file.read()
-    file_path = f"./assignment6/.cache/files/{file.name}"
+    file_path = f"./.cache/files/{file.name}"
     with open(file_path, "wb") as f:
         f.write(file_content)
-    cache_dir = LocalFileStore(f"./assignment6/.cache/embeddings/{file.name}")
+    cache_dir = LocalFileStore(f"./.cache/embeddings/{file.name}")
     splitter = CharacterTextSplitter.from_tiktoken_encoder(
         separator="\n",
         chunk_size=600,

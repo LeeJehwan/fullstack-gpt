@@ -40,9 +40,9 @@ def paint_history():
         )
 
 
-def get_embedding_model(option):
+def get_embedding_model(option, api_key):
     if option == LLMModels.GPT_3_5_TURBO.value:
-        return OpenAIEmbeddings()
+        return OpenAIEmbeddings(api_key=api_key)
     elif option == LLMModels.MISTRAL.value:
         return OllamaEmbeddings(model=option)
 
@@ -52,7 +52,7 @@ def format_docs(docs):
 
 
 @st.cache_data(show_spinner="Embedding file...")
-def embed_file(file, option):
+def embed_file(file, option, key=""):
     file_content = file.read()
     file_path = f"./.cache/files/{file.name}"
     with open(file_path, "wb") as f:
@@ -65,7 +65,7 @@ def embed_file(file, option):
     )
     loader = UnstructuredFileLoader(file_path)
     docs = loader.load_and_split(text_splitter=splitter)
-    embeddings = get_embedding_model(option)
+    embeddings = get_embedding_model(option, key)
     cached_embeddings = CacheBackedEmbeddings.from_bytes_store(embeddings, cache_dir)
     vectorstore = FAISS.from_documents(docs, cached_embeddings)
     retriever = vectorstore.as_retriever()
@@ -231,7 +231,7 @@ if option:
     llm = get_llm_model(option, key=api_key)
 
     if file and llm:
-        retriever = embed_file(file, option)
+        retriever = embed_file(file, option, key=api_key)
         send_message("I'm ready! Ask away!", "ai", save=False)
         paint_history()
         message = st.chat_input("Ask anything about your file...")

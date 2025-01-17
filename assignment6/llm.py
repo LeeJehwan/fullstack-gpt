@@ -57,6 +57,7 @@ class OpenAIModel(BaseLLM):
 
 
 class MistralModel(BaseLLM):
+
     def validate_model(self) -> None:
         try:
             self.llm = ChatOllama(
@@ -88,10 +89,13 @@ class LLMModels(Enum):
         return False
 
     @classmethod
-    def get_model_cls(cls, option):
+    def get_model_cls(cls, option, api_key):
+        if cls.need_key(option) and not api_key:
+            return None
+
         llm_model_map = {
-            cls.GPT_3_5_TURBO.value: OpenAIModel,
-            cls.MISTRAL.value: MistralModel,
+            cls.GPT_3_5_TURBO.value: OpenAIModel(api_key=api_key),
+            cls.MISTRAL.value: MistralModel(api_key=api_key),
         }
         return llm_model_map.get(option)
 
@@ -100,9 +104,10 @@ def get_llm_model(option: str, api_key: str = ""):
     if st.session_state.get(option):
         return st.session_state[option]
 
-    model = LLMModels.get_model_cls(option)
-    llm = model(api_key).run() if model else None
+    model = LLMModels.get_model_cls(option, api_key)
+    llm = model.run() if model else None
 
     if llm:
         st.session_state[option] = llm
-        return llm
+
+    return llm

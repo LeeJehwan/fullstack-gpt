@@ -82,12 +82,15 @@ def get_chain():
 
 
 def invoke_chain(chain, message):
-    with st.chat_message("ai"):
-        result = chain.invoke(message)
-    st.session_state["memory"].save_context(
-        {"input": message},
-        {"output": result.content},
-    )
+    try:
+        with st.chat_message("ai"):
+            result = chain.invoke(message)
+        st.session_state["memory"].save_context(
+            {"input": message},
+            {"output": result.content},
+        )
+    except Exception:
+        st.error("Please check your api key or llm server")
 
 
 if chain := get_chain():

@@ -1,0 +1,19 @@
+XZ Utils (previously LZMA Utils) is a set of free software command-line lossless data compressors, including the programs lzma and xz, for Unix-like operating systems and, from version 5.0 onwards, Microsoft Windows. For compression/decompression the Lempel–Ziv–Markov chain algorithm (LZMA) is used. XZ Utils started as a Unix port of Igor Pavlov's LZMA-SDK that has been adapted to fit seamlessly into Unix environments and their usual structure and behavior.
+
+Features:
+- XZ Utils can compress and decompress the xz and lzma file formats.
+- xz achieves higher compression rates than alternatives like zip, gzip, and bzip2.
+- XZ Utils consists of two major components: xz (command-line compressor and decompressor) and liblzma (a software library with an API similar to zlib).
+
+Usage:
+- xz and lzma can only compress single files as input.
+- xz has supported multi-threaded compression since version 5.2.0.
+
+The xz format improves on lzma by allowing for preprocessing filters.
+
+Development and adoption:
+- Development of XZ Utils took place within the Tukaani Project.
+- The .xz file format specification version 1.0.0 was officially released in January 2009.
+- All of the source code for xz and liblzma has been released into the public domain.
+
+Source: [Wikipedia](https://en.wikipedia.org/wiki/XZ_Utils)
